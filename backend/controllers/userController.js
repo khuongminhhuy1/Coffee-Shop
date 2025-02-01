@@ -136,7 +136,7 @@ export async function loginUser(req, res, next) {
 
   //Generate Token
   const token = jwt.sign(
-    { id: user.id, role: user.role },
+    { id: user.id, name: user.name, email: user.email, role: user.role },
     process.env.JWT_SECRET,
     {
       expiresIn: process.env.JWT_EXPIRES_IN,
@@ -144,8 +144,8 @@ export async function loginUser(req, res, next) {
   );
   res.cookie("token", token, {
     httpOnly: true, // Prevents access to the token from JavaScript
-    secure: process.env.NODE_ENV === "development", // Set to true in production for HTTPS
-    sameSite: "Strict", // Prevents CSRF attacks
+    secure: false, // Set to true in production for HTTPS
+    sameSite: "Lax", // Prevents CSRF attacks
     maxAge: 3600000, // 1 hour
   });
   res.status(200).json({
@@ -285,5 +285,18 @@ export async function DeleteUser(req, res, next) {
   return res.status(200).json({
     status: "success",
     message: "User deleted successfully",
-  }); 
+  });
+}
+
+export async function logoutUser(req, res, next) {
+  res.clearCookie("token", {
+    httpOnly: true,
+    secure: false,
+    sameSite: "Lax",
+    path: "/",
+  });
+  return res.status(200).json({
+    status: "success",
+    message: "Logout successful",
+  });
 }
