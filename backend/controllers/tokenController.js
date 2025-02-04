@@ -91,6 +91,13 @@ export async function refreshTokenHandler(req, res, next) {
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     });
 
+    res.cookie("token", newAccessToken, {
+      httpOnly: true, // Prevents access to the token from JavaScript
+      secure: false, // Set to true in production for HTTPS
+      sameSite: "Lax",
+      maxAge: 15 * 60 * 1000, // 15 minutes
+    });
+
     res.json({ accessToken: newAccessToken, refreshToken: newRefreshToken });
   } catch (error) {
     console.error("Error refreshing token:", error);

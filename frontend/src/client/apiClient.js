@@ -21,28 +21,6 @@ apiClient.interceptors.request.use(
   },
   (error) => Promise.reject(error),
 )
-api.interceptors.response.use(
-  (response) => response,
-  async (error) => {
-    if (error.response?.status === 401) {
-      try {
-        const { data } = await axios.post('/refresh-token', {})
-
-        cookies.set('token', data.token)
-        cookies.set('refreshToken', data.refreshToken)
-
-        error.config.headers['token'] = data.accessToken
-        return api.request(error.config) // Retry failed request
-      } catch (err) {
-        console.error('Refresh failed, logging out...')
-        cookies.remove('token')
-        cookies.remove('refreshToken')
-        window.location.href = '/login'
-      }
-    }
-    return Promise.reject(error)
-  },
-)
 
 // Response Interceptor: Handle expired tokens
 apiClient.interceptors.response.use(
@@ -52,19 +30,15 @@ apiClient.interceptors.response.use(
     const originalRequest = error.config
 
     // If the token expired, try refreshing it
-    if (error.response && error.response.status === 401 && !originalRequest._retry) {
+    if (error.response && error.response.status === 403 && !originalRequest._retry) {
       originalRequest._retry = true
 
       try {
-        const refreshResponse = await axios.get(`${API_SERVER_URL}/refresh-token`, {
+        const refreshResponse = await axios.get(`${API_SERVER_URL}refresh-token`, {
           withCredentials: true,
         })
+        console.log(refreshResponse.data.accessToken)
 
-        const newToken = refreshResponse.data.token
-        cookies.set('token', newToken)
-
-        // Retry the original request with the new token
-        originalRequest.headers.Authorization = `Bearer ${newToken}`
         return apiClient(originalRequest)
       } catch (refreshError) {
         console.error('Token refresh failed:', refreshError)

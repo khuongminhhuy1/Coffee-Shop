@@ -2,7 +2,6 @@ import { defineStore } from 'pinia'
 import AdminUser from '../models/user/AdminUser'
 import NormalUser from '../models/user/NormalUser'
 import { authServices } from '@/services/apiServices'
-import { useCookies } from 'vue3-cookies'
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
@@ -27,15 +26,11 @@ export const useAuthStore = defineStore('auth', {
       }
     },
     async initAuth() {
+      if (!this.isAuthenticated) return;
       try {
-        const cookies = useCookies()
-        const response = authServices.refreshToken() // Call refresh token API
-        const { token, user } = response.data // Assume response gives token + user data
-
-        cookies.set('token', token) // Save new token
-        this.setUser(user) // Set user from refreshed data
-
-        console.log('User refreshed:', user)
+        const response = await authServices.getUserData() // Call refresh token API
+        const res = response.data // Assume response gives token + user data
+        console.log(res)
       } catch (error) {
         console.error('Failed to refresh token, logging out...')
         this.logout()
