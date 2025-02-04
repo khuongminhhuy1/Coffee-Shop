@@ -1,11 +1,9 @@
 import { defineStore } from 'pinia'
-import { authServices } from '@/services/apiServices'
 import AdminUser from '../models/user/AdminUser'
 import NormalUser from '../models/user/NormalUser'
+import { authServices } from '@/services/apiServices'
 import { useCookies } from 'vue3-cookies'
-import { jwtDecode } from 'jwt-decode'
 
-const { cookies } = useCookies()
 export const useAuthStore = defineStore('auth', {
   state: () => ({
     user: null,
@@ -28,23 +26,19 @@ export const useAuthStore = defineStore('auth', {
         console.error('Error during logout:', error)
       }
     },
-    initAuth() {
-      // Log cookies to see what is available
-      console.log('Cookies:', cookies.get()) // log all cookies
-      const token = cookies.get('token')
+    async initAuth() {
+      try {
+        const cookies = useCookies()
+        const response = authServices.refreshToken() // Call refresh token API
+        const { token, user } = response.data // Assume response gives token + user data
 
-      console.log('Token found in initAuth:', token)
+        cookies.set('token', token) // Save new token
+        this.setUser(user) // Set user from refreshed data
 
-      if (token) {
-        try {
-          const decoded = jwtDecode(token)
-          console.log('Decoded token:', decoded)
-          this.setUser(decoded) // Initialize user from the token
-        } catch (error) {
-          console.error('Error decoding token:', error)
-        }
-      } else {
-        console.log('No token found in cookies.')
+        console.log('User refreshed:', user)
+      } catch (error) {
+        console.error('Failed to refresh token, logging out...')
+        this.logout()
       }
     },
   },

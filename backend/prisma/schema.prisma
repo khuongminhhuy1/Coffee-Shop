@@ -17,7 +17,6 @@ enum Role {
   USER
 }
 
-
 model User {
   id        String   @id  @default(cuid())
   email     String   @unique
@@ -30,7 +29,7 @@ model User {
   updatedAt DateTime @updatedAt
   token    Token[]
   UserInformation UserInformation[]
-
+  refreshToken RefreshToken[]
   @@map("users")
 }
 model Token{
@@ -55,4 +54,14 @@ model UserInformation {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   User      User     @relation(fields: [userId], references: [id])
+}
+model RefreshToken {
+  id         String   @id @default(uuid()) // Unique ID
+  token      String   @unique              // The refresh token itself
+  userId     String   @unique              // Link to User model
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt  DateTime // Expiry date for the token
+  createdAt  DateTime @default(now()) // When the token was created
+
+  @@map("refresh_tokens")
 }

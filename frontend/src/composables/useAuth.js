@@ -31,6 +31,7 @@ export function useAuth() {
       const response = await authServices.login(email, password)
       const token = response.data.token
       cookies.set('token', token, { path: '/', expires: '1h' })
+      cookies.set('refreshToken', data.refreshToken)
       const decoded = jwtDecode(token)
       authStore.setUser(decoded)
       router.push('/') // Redirect after login

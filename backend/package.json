@@ -27,7 +27,8 @@
     "nodemailer": "^6.10.0",
     "nodemon": "^3.1.9",
     "path": "^0.12.7",
-    "prettier": "^3.4.2"
+    "prettier": "^3.4.2",
+    "uuid": "^11.0.5"
   },
   "devDependencies": {
     "prisma": "^6.3.0"

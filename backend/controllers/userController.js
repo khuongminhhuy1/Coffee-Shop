@@ -1,12 +1,11 @@
 import "dotenv/config";
-import { PrismaClient } from "@prisma/client";
+import { prisma } from "../prisma/client.js";
 import { hashPassword, comparePassword } from "../utils/pwdHash.js";
-import crypto, { hash } from "crypto";
-import AppError from "../middleware/errors/appError.js";
+import crypto from "crypto";
+import AppError from "../middlewares/errors/appError.js";
 import { sendEmail } from "../utils/mailer.js";
 import jwt from "jsonwebtoken";
-
-const prisma = new PrismaClient();
+import { generateRefreshToken } from "./tokenController.js";
 
 export const createUser = async (req, res, next) => {
   const { name, email, password } = req.body;
@@ -135,6 +134,7 @@ export async function loginUser(req, res, next) {
   }
 
   //Generate Token
+
   const token = jwt.sign(
     { id: user.id, name: user.name, email: user.email, role: user.role },
     process.env.JWT_SECRET,
@@ -142,16 +142,25 @@ export async function loginUser(req, res, next) {
       expiresIn: process.env.JWT_EXPIRES_IN,
     }
   );
+  const refreshToken = await generateRefreshToken(user.id);
   res.cookie("token", token, {
     httpOnly: true, // Prevents access to the token from JavaScript
     secure: false, // Set to true in production for HTTPS
-    sameSite: "Lax", // Prevents CSRF attacks
-    maxAge: 3600000, // 1 hour
+    sameSite: "Lax",
+    maxAge: 15 * 60 * 1000, // 15 minutes
+  });
+
+  res.cookie("refreshToken", refreshToken, {
+    httpOnly: true,
+    secure: false,
+    sameSite: "Lax",
+    maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
   });
   res.status(200).json({
     status: "success",
     data: {
       token,
+      refreshToken,
     },
   });
 }

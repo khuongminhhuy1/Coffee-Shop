@@ -32,8 +32,9 @@ import { useAuthStore } from './stores/authStore'
 const authStore = useAuthStore()
 
 onMounted(() => {
-  authStore.initAuth() // Check if user is authenticated based on stored token
+  authStore.initAuth()
 })
+
 const route = useRoute()
 const layout = computed(() => route.meta.layout || 'default')
 const noHeader = computed(() => route.meta.noHeader)

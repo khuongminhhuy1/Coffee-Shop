@@ -30,7 +30,6 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   const authStore = useAuthStore()
   // Ensure authentication before accessing protected routes
-
   if (to.meta.requiresAuth && !authStore.isAuthenticated) {
     console.log('Checking auth:', authStore.isAuthenticated, authStore.user)
     return next('/')
