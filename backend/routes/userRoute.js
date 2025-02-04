@@ -38,7 +38,7 @@ router.post("/reset-password", catchAsync(resetPassword));
 router.put("/change-password", authMiddleware, catchAsync(changePassword));
 
 //CRUD Operations
-router.get("/users", authMiddleware, adminMiddleware, catchAsync(getUsers));
+router.get("/users", authMiddleware, catchAsync(getUsers));
 router.put("/user/:id", authMiddleware, catchAsync(UpdateUser));
 router.delete(
   "/user/:id",
@@ -48,7 +48,7 @@ router.delete(
 );
 
 //Refresh token
-router.get("/refresh-token", authMiddleware, refreshTokenHandler);
+router.get("/refresh-token", refreshTokenHandler);
 
 //Admin test
 router.get("/admin", authMiddleware, adminMiddleware, (req, res) => {

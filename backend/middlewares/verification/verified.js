@@ -7,10 +7,10 @@ export async function checkVerified(req, res, next) {
     where: { email: email },
   });
   if (!user) {
-    return new AppError("User not found", 404);
+    return next(new AppError("User not found", 404));
   }
   if (!user.verified) {
-    return new AppError("User not verified", 403);
+    return next(new AppError("User not verified", 403));
   }
   next();
 }
