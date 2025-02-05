@@ -1,6 +1,6 @@
 <template>
   <div>
-    <button @click="() => {authStore.initAuth()}" class="btn">Fetch Users</button>
+    <button @click="() => {admin.getUsers()}" class="btn">Fetch Users</button>
     <div v-if="layout === 'admin'" class="min-h-screen">
       <AdminLayout>
         <template #body>
@@ -28,9 +28,9 @@ import Layout from './views/layouts/UserLayout.vue'
 import AdminLayout from './views/layouts/AdminLayout.vue'
 import { computed, onMounted } from 'vue'
 import { RouterView } from 'vue-router'
-import { useAuthStore } from '@/stores/authStore'
+import { useAdmin } from '@/composables/useAdmin'
 
-const authStore = useAuthStore()
+const admin = useAdmin()
 
 onMounted(() => {
   //auth.register('buiquang', 'buiquang050398@gmail.com', '123456')
@@ -43,6 +43,10 @@ const noHeader = computed(() => route.meta.noHeader)
 
 <style scoped>
 .btn {
-  background-color: red; padding: 10px 20px; border-radius: 6px; color: white; cursor: pointer;
+  background-color: red;
+  padding: 10px 20px;
+  border-radius: 6px;
+  color: white;
+  cursor: pointer;
 }
 </style>

@@ -47,7 +47,7 @@ export function useAuth() {
     loading.value = true
     try {
       await authServices.logout()
-      authStore.logout() // Reset user state
+      authStore.setUser() // Reset user state
       router.push('/') // Redirect after logout
     } catch (error) {
       console.error('Logout Error:', error)

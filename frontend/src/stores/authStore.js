@@ -1,40 +1,26 @@
 import { defineStore } from 'pinia'
-import AdminUser from '../models/user/AdminUser'
-import NormalUser from '../models/user/NormalUser'
-import { authServices } from '@/services/apiServices'
+import AdminUser from '@/services/user/AdminUser'
+import NormalUser from '@/services/user/NormalUser'
+import { ref } from 'vue'
 
-export const useAuthStore = defineStore('auth', {
-  state: () => ({
-    user: null,
-    isAuthenticated: false,
-  }),
-  actions: {
-    setUser(data) {
-      this.user =
+const authStore = () => {
+  const user = ref(null)
+  const isAuthenticated = ref(false)
+
+  const setUser = (data) => { //set data undefined to logout
+    if (data) {
+      user.value =
         data.role === 'ADMIN'
           ? new AdminUser(data.name, data.email)
           : new NormalUser(data.name, data.email)
-      this.isAuthenticated = true
-    },
+      isAuthenticated.value = true
+    } else {
+      user.value = null
+      isAuthenticated.value = false
+    }
+  }
 
-    async logout() {
-      try {
-        this.user = null
-        this.isAuthenticated = false
-      } catch (error) {
-        console.error('Error during logout:', error)
-      }
-    },
-    async initAuth() {
-      if (!this.isAuthenticated) return;
-      try {
-        const response = await authServices.getUserData() // Call refresh token API
-        const res = response.data // Assume response gives token + user data
-        console.log(res)
-      } catch (error) {
-        console.error('Failed to refresh token, logging out...')
-        this.logout()
-      }
-    },
-  },
-})
+  return { user, isAuthenticated, setUser }
+}
+
+export const useAuthStore = defineStore('auth', authStore)
