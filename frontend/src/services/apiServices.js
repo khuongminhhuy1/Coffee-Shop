@@ -1,11 +1,21 @@
-import apiClient from '@/client/apiClient.js'
+import { AxiosServices } from './AxiosServices'
 
-const authServices = {
-  login: (email, password) => apiClient.post('/login', { email, password }),
-  logout: () => apiClient.post('/logout'),
-  getUserData: () => apiClient.get('/users'),
-  refreshToken: () => apiClient.post('/refresh-token'),
-  register: (name, email, password) => apiClient.post('/register', {name, email, password})
+export class AuthServices extends AxiosServices {
+  async login(email, password) {
+    return await this.post('/login', { email, password })
+  }
+  async logout() {
+    return await this.post('/logout')
+  }
+  async getUserData() {
+    return await this.get('/users')
+  }
+  async refreshToken() {
+    return await this.post('/refresh-token')
+  }
+  async register(name, email, password) {
+    return await this.post('/register', { name, email, password })
+  }
 }
 
-export { authServices }
+export const authServices = new AuthServices()
