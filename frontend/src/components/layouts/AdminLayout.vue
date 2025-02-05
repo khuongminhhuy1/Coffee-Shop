@@ -18,8 +18,8 @@
 </template>
 
 <script>
-import AdminHeader from '@/views/common/admin/AdminHeader.vue'
-import AdminFooter from '@/views/common/admin/AdminFooter.vue'
+import AdminFooter from '../common/admin/AdminFooter.vue';
+import AdminHeader from '../common/admin/AdminHeader.vue';
 
 export default {
   name: 'AdminLayout',

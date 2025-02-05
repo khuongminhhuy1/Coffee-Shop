@@ -1,6 +1,6 @@
-import ContentManagement from '@/components/admin/ContentManagement.vue'
-import HomePage from '@/components/home/HomePage.vue'
-import Login from '@/components/user/Login.vue'
+import ContentManagement from '@/views/admin/ContentManagement.vue'
+import HomePage from '@/views/home/HomePage.vue'
+import Login from '@/views/user/Login.vue'
 import { useAuthStore } from '@/stores/authStore'
 import { createRouter, createWebHistory } from 'vue-router'
 

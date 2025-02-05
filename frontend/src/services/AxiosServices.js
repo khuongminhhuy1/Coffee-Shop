@@ -21,7 +21,7 @@ export class AxiosServices {
           originalRequest._retry = true
 
           try {
-            const refreshResponse = await axios.get(`${API_SERVER_URL}refresh-token`, {
+            const refreshResponse = await axios.get(`${API_SERVER_URL}/refresh-token`, {
               withCredentials: true,
             })
             console.log(refreshResponse.data.accessToken)

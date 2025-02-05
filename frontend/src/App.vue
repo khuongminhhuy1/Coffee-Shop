@@ -1,6 +1,15 @@
 <template>
   <div>
-    <button @click="() => {admin.getUsers()}" class="btn">Fetch Users</button>
+    <button
+      @click="
+        () => {
+          admin.getUsers()
+        }
+      "
+      class="btn"
+    >
+      Fetch Users
+    </button>
     <div v-if="layout === 'admin'" class="min-h-screen">
       <AdminLayout>
         <template #body>
@@ -24,11 +33,11 @@
 </template>
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
-import Layout from './views/layouts/UserLayout.vue'
-import AdminLayout from './views/layouts/AdminLayout.vue'
+import Layout from './components/layouts/UserLayout.vue'
+import AdminLayout from './components/layouts/AdminLayout.vue'
 import { computed, onMounted } from 'vue'
 import { RouterView } from 'vue-router'
-import { useAdmin } from '@/composables/useAdmin'
+import { useAdmin } from '@/composables/admin.composables'
 
 const admin = useAdmin()
 
