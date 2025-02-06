@@ -3,6 +3,7 @@ import {
   changePassword,
   createUser,
   forgotPassword,
+  getUserData,
   getUsers,
   loginUser,
   logoutUser,
@@ -16,9 +17,12 @@ import { adminMiddleware } from "../middlewares/verification/protected.js";
 import { constructUrl } from "../urlHelper.js";
 import { refreshTokenHandler } from "../controllers/tokenController.js";
 import { checkVerified } from "../middlewares/verification/verified.js";
+import {
+  deleteUserInformation,
+  saveUserInformation,
+} from "../controllers/userInfoController.js";
 
 const router = express.Router();
-
 router.use((req, res, next) => {
   res.locals.url = constructUrl(req);
   next();
@@ -39,6 +43,7 @@ router.put("/change-password", authMiddleware, catchAsync(changePassword));
 
 //CRUD Operations
 router.get("/users", authMiddleware, catchAsync(getUsers));
+router.get("/user/:id", authMiddleware, catchAsync(getUserData));
 router.put("/user/:id", authMiddleware, catchAsync(UpdateUser));
 router.delete(
   "/user/:id",
@@ -49,6 +54,14 @@ router.delete(
 
 //Refresh token
 router.get("/refresh-token", refreshTokenHandler);
+
+//User Data
+router.post("/profile/:id", authMiddleware, catchAsync(saveUserInformation));
+router.delete(
+  "/profile/:id",
+  authMiddleware,
+  catchAsync(deleteUserInformation)
+);
 
 //Admin test
 router.get("/admin", authMiddleware, adminMiddleware, (req, res) => {

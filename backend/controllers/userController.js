@@ -156,7 +156,7 @@ export async function loginUser(req, res, next) {
     sameSite: "Lax",
     maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
   });
-  res.status(200).json({
+  return res.status(200).json({
     status: "success",
     data: {
       token,
@@ -259,16 +259,7 @@ export async function changePassword(req, res, next) {
       next(new AppError(error.message, 500));
     });
 }
-//Get Users
-export async function getUsers(req, res, next) {
-  const users = await prisma.user.findMany();
-  return res.status(200).json({
-    status: "success",
-    data: {
-      users,
-    },
-  });
-}
+
 //Update User
 export async function UpdateUser(req, res, next) {
   const { id } = req.params;
@@ -308,4 +299,30 @@ export async function logoutUser(req, res, next) {
     status: "success",
     message: "Logout successful",
   });
+}
+
+//Get Users
+export async function getUsers(req, res, next) {
+  const users = await prisma.user.findMany();
+  return res.status(200).json({
+    status: "success",
+    data: {
+      users,
+    },
+  });
+}
+//Get User Data
+export async function getUserData(req, res, next) {
+  const { id } = req.params;
+  const user = await prisma.user.findUnique({
+    where: { id: id },
+    include: {
+      UserInformation: true,
+    },
+  });
+  if (user) {
+    return res.status(200).json("User Data Retrieved", user);
+  } else {
+    return next(new AppError("User not found", 404));
+  }
 }

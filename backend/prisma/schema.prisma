@@ -17,6 +17,13 @@ enum Role {
   USER
 }
 
+enum OrderStatus {
+  PENDING
+  DELIVERING
+  COMPLETED
+  CANCELLED
+}
+
 model User {
   id        String   @id  @default(cuid())
   email     String   @unique
@@ -27,16 +34,18 @@ model User {
   verified  Boolean  @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  token    Token[]
-  UserInformation UserInformation[]
+  token       Token[]
+  userInformation UserInformation[]
   refreshToken RefreshToken[]
+  cart Cart[]
+  orders Orders[]
   @@map("users")
 }
 model Token{
-  id     String    @id @default(cuid())
-  user   User   @relation(fields: [userId], references: [id])
-  userId String   
-  token  String    
+  id        String    @id @default(cuid())
+  user      User   @relation(fields: [userId], references: [id])
+  userId    String   
+  token     String    
   expiresAt DateTime
 
   @@map("tokens")
@@ -64,4 +73,69 @@ model RefreshToken {
   createdAt  DateTime @default(now()) // When the token was created
 
   @@map("refresh_tokens")
+}
+model Category {
+  id        Int @id @default(autoincrement())
+  name      String @unique
+  total     Int @default(0)
+  createdAt DateTime @default(now())
+  products  Product[]
+
+  @@map("categories")
+}
+
+model Product {
+  id          String @id @default(uuid())
+  name        String @unique
+  categories  Category[]
+  price       Float
+  description String?
+  images      Image[]
+  cart        Cart[]
+  order       Orders[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("products")
+}
+
+model Image {
+  id        String @id @default(uuid())
+  url       String
+  product   Product @relation(fields: [productId], references: [id])
+  productId String
+
+  @@map("images")
+}
+
+model Cart {
+  id        Int      @id @default(autoincrement())
+  userId    String
+  productId String
+  quantity  Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  User      User     @relation(fields: [userId], references: [id])
+  Product   Product  @relation(fields: [productId], references: [id])
+
+  @@unique([userId, productId])
+  @@map("carts")
+}
+
+model Orders {
+  id            Int         @id @default(autoincrement())
+  userId        String
+  productId     String
+  orderNumber   String        @unique
+  quantity      Int
+  totalAmount   Float
+  status        OrderStatus  @default(PENDING)
+  paymentMethod String
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  User          User         @relation(fields: [userId], references: [id])  
+  Product   Product  @relation(fields: [productId], references: [id])
+  
+  @@index([userId])
+  @@map("orders")
 }

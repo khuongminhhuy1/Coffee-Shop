@@ -7,6 +7,8 @@ import { dirname } from "path";
 import cookieParser from "cookie-parser";
 
 import userRouter from "./routes/userRoute.js";
+import categoryRouter from "./routes/categoryRoute.js";
+import productRouter from "./routes/productRoute.js";
 
 const app = express();
 
@@ -19,6 +21,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 app.use("/", userRouter);
+app.use("/category", categoryRouter);
+app.use("/product", productRouter);
 
 const PORT = process.env.PORT || 3000;
 
