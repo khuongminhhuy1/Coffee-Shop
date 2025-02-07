@@ -5,7 +5,7 @@
       <h1 class="text-4xl font-extrabold tracking-tight sm:text-6xl">
         Welcome to
         <span
-          class="bg-gradient-to-l from-blue-500 via-teal-500 to-green-500 text-transparent bg-clip-text"
+          class="bg-gradient-to-l from-amber-600 via-amber-700 to-amber-900 text-transparent bg-clip-text"
         >
           Coffeel
         </span>
@@ -16,26 +16,26 @@
       </p>
     </div>
 
-    <!-- Divider -->
-    <div class="w-full h-0.5 bg-gray-200 my-8"></div>
+    <!-- Info Section -->
+    <div class="w-full mx-auto"></div>
+    <AboutUs />
 
-    <!-- Category Section (Scrollable Content) -->
-    <div class="w-full sm:w-10/12 mx-auto"></div>
-
-    <!-- Divider -->
-    <div class="w-full h-0.5 bg-gray-200 my-8"></div>
-
-    <div class="w-full sm:w-10/12 mx-auto justify-center items-center"></div>
-
-    <!-- Divider -->
-    <div class="w-full h-0.5 bg-gray-200 my-8"></div>
+    <div class="w-full flex justify-center items-center">
+      <ProductPresentation />
+    </div>
 
     <div class=""></div>
   </main>
 </template>
 
 <script>
+import AboutUs from '@/components/homepage/AboutUs.vue'
+import ProductPresentation from '@/components/homepage/ProductPresentation.vue'
 export default {
   name: 'HomePage',
+  components: {
+    AboutUs,
+    ProductPresentation,
+  },
 }
 </script>

@@ -1,9 +1,9 @@
 <template>
   <div
-    class="flex flex-col min-h-screen bg-cover bg-[url(/images/wallpaper.png)] bg-center bg-fixed relative"
+    class="flex flex-col min-h-screen bg-cover bg-[url('../assets/bg/main-bg.jpg')] bg-center bg-fixed relative"
   >
     <!-- Sticky Header Section -->
-    <Header class="sticky top-0 z-50 bg-white shadow-md" />
+    <Header class="sticky top-0 z-50 backdrop-blur shadow-md pb-4 border-b-1 border-amber-50" />
 
     <!-- Main Content Section -->
     <main class="p-4 w-full">

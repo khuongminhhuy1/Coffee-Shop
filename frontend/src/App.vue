@@ -1,15 +1,5 @@
 <template>
   <div>
-    <button
-      @click="
-        () => {
-          admin.getUsers()
-        }
-      "
-      class="btn"
-    >
-      Fetch Users
-    </button>
     <div v-if="layout === 'admin'" class="min-h-screen">
       <AdminLayout>
         <template #body>

@@ -1,6 +1,7 @@
 <template lang="">
-  <div>
-    Header
+  <div class="flex flex-row justify-between items-center w-full text-white px-2 pt-4">
+    <div>Sidebar</div>
+    <div>Coffee Shop</div>
     <LoginButton />
   </div>
 </template>

@@ -17,5 +17,11 @@ export class AuthServices extends AxiosServices {
     return await this.post('/register', { name, email, password })
   }
 }
-
 export const authServices = new AuthServices()
+
+export class ProductServices extends AxiosServices {
+  async getProducts() {
+    return await this.get('/product')
+  }
+}
+export const productServices = new ProductServices()
