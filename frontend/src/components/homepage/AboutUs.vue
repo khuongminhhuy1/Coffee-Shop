@@ -21,8 +21,4 @@
     </section>
   </div>
 </template>
-<script>
-export default {
-  name: 'AboutUs',
-}
-</script>
+<script setup></script>

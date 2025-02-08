@@ -1,4 +1,4 @@
-import { authServices } from '@/services/apiServices'
+import { adminServices } from '@/services/apiServices'
 import { useAuthStore } from '@/stores/authStore'
 import { useAuth } from './useAuth'
 export const useAdmin = () => {
@@ -7,9 +7,10 @@ export const useAdmin = () => {
   const getUsers = async () => {
     if (!authStore.isAuthenticated) return
     try {
-      const response = await authServices.getUserData() // Call refresh token API
+      const response = await adminServices.getUserData() // Call refresh token API
       const res = response.data // Assume response gives token + user data
       console.log(res)
+      return res
     } catch (error) {
       console.error('Failed to refresh token, logging out...')
       await auth.logout()

@@ -1,7 +1,5 @@
 <template lang="">
-  <div>
-    Admin Footer
-  </div>
+
 </template>
 <script>
 export default {

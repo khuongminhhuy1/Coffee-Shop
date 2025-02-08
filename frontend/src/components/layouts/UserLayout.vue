@@ -23,15 +23,7 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import Header from '../common/user/Header.vue'
 import Footer from '../common/user/Footer.vue'
-
-export default {
-  name: 'Layout',
-  components: {
-    Header,
-    Footer,
-  },
-}
 </script>

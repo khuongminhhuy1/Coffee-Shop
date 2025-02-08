@@ -7,9 +7,6 @@ export class AuthServices extends AxiosServices {
   async logout() {
     return await this.post('/logout')
   }
-  async getUserData() {
-    return await this.get('/users')
-  }
   async refreshToken() {
     return await this.post('/refresh-token')
   }
@@ -25,3 +22,10 @@ export class ProductServices extends AxiosServices {
   }
 }
 export const productServices = new ProductServices()
+
+export class AdminServices extends AxiosServices {
+  async getUserData() {
+    return await this.get('/users')
+  }
+}
+export const adminServices = new AdminServices()

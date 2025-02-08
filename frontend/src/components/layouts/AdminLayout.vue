@@ -1,28 +1,24 @@
 <template>
-  <div class="h-screen flex flex-col">
-    <!-- Header -->
-    <AdminHeader />
+  <div class="h-screen flex flex-row w-full">
+    <div class="w-full flex flex-col">
+      <!-- Header -->
 
-    <!-- Main Content -->
-    <div class="flex flex-grow h-full">
-      <!-- Sidebar -->
-      <!-- Main Content Area -->
-      <div class="flex-grow p-4">
-        <router-view></router-view>
+      <AdminHeader />
+      <!-- Main Content -->
+      <div class="flex flex-grow h-full">
+        <!-- Main Content Area -->
+        <div class="flex-grow p-4">
+          <router-view></router-view>
+        </div>
       </div>
-    </div>
 
-    <!-- Footer -->
-    <AdminFooter />
+      <!-- Footer -->
+      <AdminFooter />
+    </div>
   </div>
 </template>
 
-<script>
-import AdminFooter from '../common/admin/AdminFooter.vue';
-import AdminHeader from '../common/admin/AdminHeader.vue';
-
-export default {
-  name: 'AdminLayout',
-  components: { AdminHeader, AdminFooter },
-}
+<script setup>
+import AdminFooter from '../common/admin/AdminFooter.vue'
+import AdminHeader from '../common/admin/AdminHeader.vue'
 </script>

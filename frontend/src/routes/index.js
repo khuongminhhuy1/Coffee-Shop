@@ -3,6 +3,8 @@ import HomePage from '@/views/home/HomePage.vue'
 import Login from '@/views/user/Login.vue'
 import { useAuthStore } from '@/stores/authStore'
 import { createRouter, createWebHistory } from 'vue-router'
+import Dashboard from '@/views/admin/Dashboard.vue'
+import ShowUsers from '@/views/admin/user/ShowUsers.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -24,6 +26,20 @@ const router = createRouter({
       name: 'admin',
       component: ContentManagement,
       meta: { layout: 'admin', requiresAuth: true, requiresRole: 'ADMIN' },
+      children: [
+        {
+          path: '/admin/dashboard',
+          name: 'dashboard',
+          component: Dashboard,
+          meta: { layout: 'admin', requiresAuth: true, requiresRole: 'ADMIN' },
+        },
+        {
+          path: '/admin/users',
+          name: 'admin-users',
+          component: ShowUsers,
+          meta: { layout: 'admin', requiresAuth: true, requiresRole: 'ADMIN' },
+        },
+      ],
     },
   ],
 })

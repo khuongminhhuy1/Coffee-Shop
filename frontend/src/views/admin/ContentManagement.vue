@@ -1,9 +1,6 @@
-<template lang="">
-  <div>Test Admin route</div>
+<template>
+  <div class="">
+    <router-view></router-view>
+  </div>
 </template>
-<script>
-export default {
-  name: 'ContentManagement',
-}
-</script>
-<style lang=""></style>
+<script setup></script>

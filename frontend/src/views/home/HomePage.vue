@@ -28,14 +28,7 @@
   </main>
 </template>
 
-<script>
+<script setup>
 import AboutUs from '@/components/homepage/AboutUs.vue'
 import ProductPresentation from '@/components/homepage/ProductPresentation.vue'
-export default {
-  name: 'HomePage',
-  components: {
-    AboutUs,
-    ProductPresentation,
-  },
-}
 </script>
