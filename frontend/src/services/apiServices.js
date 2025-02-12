@@ -27,5 +27,15 @@ export class AdminServices extends AxiosServices {
   async getUserData() {
     return await this.get('/users')
   }
+  async deleteUser(id) {
+    return await this.delete(`/user/${id}`)
+  }
 }
 export const adminServices = new AdminServices()
+
+export class UserServices extends AxiosServices {
+  async getUserInfo(id) {
+    return await this.get(`/user/${id}`)
+  }
+}
+export const userServices = new UserServices()

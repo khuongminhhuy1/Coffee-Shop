@@ -1,9 +1,8 @@
 import User from './User'
 
 export default class AdminUser extends User {
-  constructor(name, email) {
-    super(name, email)
-    this.role = 'ADMIN'
+  constructor(id, name, email, avatar) {
+    super(id, name, email, 'ADMIN', avatar)
   }
 
   login() {

@@ -4,7 +4,7 @@ import { useAuth } from './useAuth'
 export const useAdmin = () => {
   const authStore = useAuthStore()
   const auth = useAuth()
-  const getUsers = async () => {
+  async function getUsers() {
     if (!authStore.isAuthenticated) return
     try {
       const response = await adminServices.getUserData() // Call refresh token API
@@ -16,5 +16,16 @@ export const useAdmin = () => {
       await auth.logout()
     }
   }
-  return { getUsers }
+  async function deleteUser(id) {
+    if (!authStore.isAuthenticated && authStore.role != 'ADMIN') return
+    try {
+      await adminServices.deleteUser(id) // Call refresh token API
+      console.log('User Deleted')
+    } catch (error) {
+      console.error('Failed to refresh token, logging out...')
+      await auth.logout()
+      throw error
+    }
+  }
+  return { getUsers, deleteUser }
 }

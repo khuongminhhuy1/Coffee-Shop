@@ -5,6 +5,9 @@ import { useAuthStore } from '@/stores/authStore'
 import { createRouter, createWebHistory } from 'vue-router'
 import Dashboard from '@/views/admin/Dashboard.vue'
 import ShowUsers from '@/views/admin/user/ShowUsers.vue'
+import UserRegister from '@/views/user/UserRegister.vue'
+import UserProfile from '@/views/user/UserProfile.vue'
+import UserInfo from '@/views/user/UserInfo.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -20,6 +23,27 @@ const router = createRouter({
       name: 'login',
       component: Login,
       meta: { noHeader: true },
+    },
+    {
+      path: '/register',
+      name: 'register',
+      component: UserRegister,
+      meta: { noHeader: true },
+    },
+    {
+      path: '/profile',
+      name: 'Profile',
+      component: UserProfile,
+      meta: { noHeader: false },
+      children: [
+        {
+          path: '/profile/information',
+          name: 'UserInfo',
+          component: UserInfo,
+          meta: { noHeader: false, layout: 'default' },
+          props: (route) => ({ user: route.params.user }),
+        },
+      ],
     },
     {
       path: '/admin',

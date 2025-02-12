@@ -2,6 +2,7 @@ import express from "express";
 import {
   changePassword,
   createUser,
+  DeleteUser,
   forgotPassword,
   getUserData,
   getUsers,
@@ -21,6 +22,7 @@ import {
   deleteUserInformation,
   saveUserInformation,
 } from "../controllers/userInfoController.js";
+import { handleMulterError, upload } from "../utils/upload.js";
 
 const router = express.Router();
 router.use((req, res, next) => {
@@ -44,12 +46,18 @@ router.put("/change-password", authMiddleware, catchAsync(changePassword));
 //CRUD Operations
 router.get("/users", authMiddleware, catchAsync(getUsers));
 router.get("/user/:id", authMiddleware, catchAsync(getUserData));
-router.put("/user/:id", authMiddleware, catchAsync(UpdateUser));
+router.put(
+  "/user/:id",
+  authMiddleware,
+  upload.single("avatar"),
+  handleMulterError,
+  catchAsync(UpdateUser)
+);
 router.delete(
   "/user/:id",
   authMiddleware,
   adminMiddleware,
-  catchAsync(UpdateUser)
+  catchAsync(DeleteUser)
 );
 
 //Refresh token

@@ -6,6 +6,7 @@ import AppError from "../middlewares/errors/appError.js";
 import { sendEmail } from "../utils/mailer.js";
 import jwt from "jsonwebtoken";
 import { generateRefreshToken } from "./tokenController.js";
+import { uploadToCloudinary } from "../utils/upload.js";
 
 export const createUser = async (req, res, next) => {
   const { name, email, password } = req.body;
@@ -136,7 +137,13 @@ export async function loginUser(req, res, next) {
   //Generate Token
 
   const token = jwt.sign(
-    { id: user.id, name: user.name, email: user.email, role: user.role },
+    {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+      avatar: user.avatar,
+    },
     process.env.JWT_SECRET,
     {
       expiresIn: process.env.JWT_EXPIRES_IN,
@@ -262,26 +269,41 @@ export async function changePassword(req, res, next) {
 
 //Update User
 export async function UpdateUser(req, res, next) {
-  const { id } = req.params;
-  const { name } = req.body;
-  if (!name) {
-    return next(new AppError("Please provide all required fields", 400));
+  try {
+    const { id } = req.params;
+    const { name } = req.body;
+    let avatarUrl = null;
+
+    if (req.file) {
+      const uploadResult = await uploadToCloudinary(req.file.buffer);
+      avatarUrl = uploadResult.secure_url;
+    }
+
+    const updateData = {};
+    if (name) updateData.name = name;
+    if (avatarUrl) updateData.avatar = avatarUrl;
+
+    if (!Object.keys(updateData).length) {
+      return next(new AppError("No data provided for update", 400));
+    }
+
+    const user = await prisma.user.update({
+      where: { id: id },
+      data: updateData,
+    });
+
+    return res.status(200).json({
+      status: "success",
+      data: user,
+    });
+  } catch (error) {
+    next(error);
   }
-  const user = await prisma.user.update({
-    where: { id: parseInt(id) },
-    data: { name },
-  });
-  return res.status(200).json({
-    status: "success",
-    data: {
-      user,
-    },
-  });
 }
 
 export async function DeleteUser(req, res, next) {
   const { id } = req.params;
-  await prisma.user.delete({ where: { id: parseInt(id) } });
+  await prisma.user.delete({ where: { id: id } });
   return res.status(200).json({
     status: "success",
     message: "User deleted successfully",
@@ -317,11 +339,17 @@ export async function getUserData(req, res, next) {
   const user = await prisma.user.findUnique({
     where: { id: id },
     include: {
-      UserInformation: true,
+      userInformation: true,
     },
   });
   if (user) {
-    return res.status(200).json("User Data Retrieved", user);
+    return res.status(200).json({
+      message: "User Data Retrieved",
+      user: {
+        ...user,
+        userInformation: user.userInformation || null, // Ensuring null if missing
+      },
+    });
   } else {
     return next(new AppError("User not found", 404));
   }
