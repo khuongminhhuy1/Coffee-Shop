@@ -23,6 +23,24 @@ export function useUser() {
       throw error
     }
   }
+  async function changePassword(oldPassword, newPassword) {
+    try {
+      await userServices.changePassword(oldPassword, newPassword)
+      console.log('Password changed successfully')
 
-  return { user, error, getUserData }
+      // Show success message to user
+      alert('Password changed successfully')
+    } catch (error) {
+      console.error('Error changing password:', error)
+
+      // Handle specific errors
+      if (error.response?.data?.error) {
+        alert(error.response.data.error) // Show API error message
+      } else {
+        alert('Something went wrong. Please try again.')
+      }
+    }
+  }
+
+  return { user, error, getUserData, changePassword }
 }

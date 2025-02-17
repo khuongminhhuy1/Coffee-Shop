@@ -37,5 +37,8 @@ export class UserServices extends AxiosServices {
   async getUserInfo(id) {
     return await this.get(`/user/${id}`)
   }
+  async changePassword(oldPassword, newPassword) {
+    return await this.put(`/change-password`, { oldPassword, newPassword })
+  }
 }
 export const userServices = new UserServices()

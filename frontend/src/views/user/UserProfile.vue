@@ -37,6 +37,9 @@
                     <router-link to="/profile/address">
                       <li class="hover:text-emerald-400">Address</li>
                     </router-link>
+                    <router-link to="/profile/change-password">
+                      <li class="hover:text-emerald-400">Change Password</li>
+                    </router-link>
                   </ul>
                 </details>
               </li>
@@ -49,7 +52,7 @@
 
         <!-- Right Column: Content Area (7/10 on Desktop, Full-width on Mobile) -->
         <div class="w-full md:w-7/10 bg-gray-700 p-6 rounded-lg shadow-lg">
-          <router-view :user="user" @update-profile="handleProfileUpdate"></router-view>
+          <router-view :user="user"></router-view>
         </div>
       </div>
     </div>

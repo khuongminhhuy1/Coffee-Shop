@@ -8,6 +8,7 @@ import ShowUsers from '@/views/admin/user/ShowUsers.vue'
 import UserRegister from '@/views/user/UserRegister.vue'
 import UserProfile from '@/views/user/UserProfile.vue'
 import UserInfo from '@/views/user/UserInfo.vue'
+import ChangePassword from '@/components/form/ChangePassword.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -40,6 +41,13 @@ const router = createRouter({
           path: '/profile/information',
           name: 'UserInfo',
           component: UserInfo,
+          meta: { noHeader: false, layout: 'default' },
+          props: (route) => ({ user: route.params.user }),
+        },
+        {
+          path: '/profile/change-password',
+          name: 'change-password',
+          component: ChangePassword,
           meta: { noHeader: false, layout: 'default' },
           props: (route) => ({ user: route.params.user }),
         },
