@@ -9,6 +9,8 @@ import UserRegister from '@/views/user/UserRegister.vue'
 import UserProfile from '@/views/user/UserProfile.vue'
 import UserInfo from '@/views/user/UserInfo.vue'
 import ChangePassword from '@/components/form/ChangePassword.vue'
+import ForgotPassword from '@/views/user/ForgotPassword.vue'
+import ResetPassword from '@/views/user/ResetPassword.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -29,6 +31,18 @@ const router = createRouter({
       path: '/register',
       name: 'register',
       component: UserRegister,
+      meta: { noHeader: true },
+    },
+    {
+      path: '/forgot-password',
+      name: 'forgot-password',
+      component: ForgotPassword,
+      meta: { noHeader: true },
+    },
+    {
+      path: '/reset-password',
+      name: 'reset-password',
+      component: ResetPassword,
       meta: { noHeader: true },
     },
     {

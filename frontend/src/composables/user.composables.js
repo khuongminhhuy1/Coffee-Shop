@@ -41,6 +41,21 @@ export function useUser() {
       }
     }
   }
-
-  return { user, error, getUserData, changePassword }
+  async function forgotPassword(email) {
+    try {
+      await userServices.forgotPassword(email)
+      console.log('Email sent')
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  async function resetPassword(token, newPassword) {
+    try {
+      await userServices.resetPassword(token, newPassword)
+      console.log('success')
+    } catch (error) {
+      console.log('err during reset pwd :', error)
+    }
+  }
+  return { user, error, getUserData, changePassword, forgotPassword, resetPassword }
 }
