@@ -8,7 +8,7 @@ export class AuthServices extends AxiosServices {
     return await this.post('/logout')
   }
   async refreshToken() {
-    return await this.post('/refresh-token')
+    return await this.post('/refresh-token', {})
   }
   async register(name, email, password) {
     return await this.post('/register', { name, email, password })
@@ -45,6 +45,15 @@ export class UserServices extends AxiosServices {
   }
   async resetPassword(token, password) {
     return await this.post(`/reset-password?token=${token}`, { password })
+  }
+  async getUserAddress(id) {
+    return await this.get(`/profile/${id}`)
+  }
+  async saveUserInfo(userId, data) {
+    return await this.post(`/profile/${userId}`, data)
+  }
+  async deleteUserInfo(userId) {
+    return await this.delete(`/profile/${userId}`)
   }
 }
 export const userServices = new UserServices()

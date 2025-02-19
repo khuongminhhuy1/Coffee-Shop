@@ -7,7 +7,10 @@ export const useAuthStore = defineStore('auth', {
     user: null,
     isAuthenticated: false,
   }),
-
+  persist: {
+    key: 'auth',
+    storage: window.localStorage,
+  },
   actions: {
     setUser(data) {
       if (data) {
@@ -26,9 +29,5 @@ export const useAuthStore = defineStore('auth', {
       this.user = null
       this.isAuthenticated = false
     },
-  },
-
-  getters: {
-    userId: (state) => state.user?.id || null,
   },
 })

@@ -317,6 +317,12 @@ export async function logoutUser(req, res, next) {
     sameSite: "Lax",
     path: "/",
   });
+  res.clearCookie("refreshToken", {
+    httpOnly: true,
+    secure: false,
+    sameSite: "Lax",
+    path: "/",
+  });
   return res.status(200).json({
     status: "success",
     message: "Logout successful",

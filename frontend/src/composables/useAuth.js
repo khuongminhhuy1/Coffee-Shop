@@ -56,5 +56,6 @@ export function useAuth() {
       loading.value = false
     }
   }
-  return { register, login, logout, loading, errorMessage }
+
+  return { register, login, logout, loading, errorMessage}
 }

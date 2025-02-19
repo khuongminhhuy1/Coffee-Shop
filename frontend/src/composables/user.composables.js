@@ -57,5 +57,13 @@ export function useUser() {
       console.log('err during reset pwd :', error)
     }
   }
-  return { user, error, getUserData, changePassword, forgotPassword, resetPassword }
+  async function getUserAddress(id) {
+    try {
+      const res = await userServices.getUserAddress(id)
+      return res.data
+    } catch (error) {
+      console.log('Error fetching user address:', error)
+    }
+  }
+  return { user, error, getUserData, getUserAddress, changePassword, forgotPassword, resetPassword }
 }

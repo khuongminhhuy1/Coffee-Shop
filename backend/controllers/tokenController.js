@@ -1,18 +1,24 @@
 import { prisma } from "../prisma/client.js";
 import jwt from "jsonwebtoken";
+import crypto from "crypto";
 
 export async function generateRefreshToken(userId) {
   // Generate unique token
   const refreshToken = jwt.sign({ userId }, process.env.REFRESH_SECRET, {
     expiresIn: "7d",
   });
+  const hashedRefreshToken = crypto
+    .createHash("sha256")
+    .update(refreshToken)
+    .digest("hex");
+
   const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000); // 7 days expiration
 
   await prisma.refreshToken.deleteMany({ where: { userId } });
   // Store refresh token in the database
   await prisma.refreshToken.create({
     data: {
-      token: refreshToken,
+      token: hashedRefreshToken,
       userId,
       expiresAt,
     },
@@ -28,10 +34,13 @@ export async function refreshTokenHandler(req, res, next) {
     if (!refreshToken) {
       return next(new AppError("Refresh token missing", 401));
     }
-
+    const hashedRefreshToken = crypto
+      .createHash("sha256")
+      .update(refreshToken)
+      .digest("hex");
     // Find refresh token in the database
     const storedToken = await prisma.refreshToken.findFirst({
-      where: { token: refreshToken },
+      where: { token: hashedRefreshToken },
     });
 
     if (!storedToken) {
@@ -40,7 +49,7 @@ export async function refreshTokenHandler(req, res, next) {
 
     // Check if token is expired
     if (new Date(storedToken.expiresAt) < new Date()) {
-      await prisma.refreshToken.delete({ where: { token: refreshToken } });
+      await prisma.refreshToken.delete({ where: { token: hashedRefreshToken } });
       return next(
         new AppError("Refresh token expired, please log in again", 403)
       );

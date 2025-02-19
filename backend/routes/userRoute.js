@@ -20,6 +20,7 @@ import { refreshTokenHandler } from "../controllers/tokenController.js";
 import { checkVerified } from "../middlewares/verification/verified.js";
 import {
   deleteUserInformation,
+  getUserInformation,
   saveUserInformation,
 } from "../controllers/userInfoController.js";
 import { handleMulterError, upload } from "../utils/upload.js";
@@ -64,9 +65,14 @@ router.delete(
 router.get("/refresh-token", refreshTokenHandler);
 
 //User Data
-router.post("/profile/:id", authMiddleware, catchAsync(saveUserInformation));
+router.get("/profile/:userId", authMiddleware, catchAsync(getUserInformation));
+router.post(
+  "/profile/:userId",
+  authMiddleware,
+  catchAsync(saveUserInformation)
+);
 router.delete(
-  "/profile/:id",
+  "/profile/:userId",
   authMiddleware,
   catchAsync(deleteUserInformation)
 );

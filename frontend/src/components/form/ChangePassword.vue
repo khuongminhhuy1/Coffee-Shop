@@ -1,6 +1,5 @@
 <script setup>
 import { ref } from 'vue'
-import { useAuthStore } from '@/stores/authStore'
 import { useUser } from '@/composables/user.composables'
 
 // State

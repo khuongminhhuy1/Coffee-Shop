@@ -27,13 +27,8 @@ import Layout from './components/layouts/UserLayout.vue'
 import AdminLayout from './components/layouts/AdminLayout.vue'
 import { computed, onMounted } from 'vue'
 import { RouterView } from 'vue-router'
-import { useAdmin } from '@/composables/admin.composables'
 
-const admin = useAdmin()
-
-onMounted(() => {
-  //auth.register('buiquang', 'buiquang050398@gmail.com', '123456')
-})
+onMounted(() => {})
 
 const route = useRoute()
 const layout = computed(() => route.meta.layout || 'default')

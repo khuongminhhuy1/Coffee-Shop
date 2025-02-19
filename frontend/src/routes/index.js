@@ -11,6 +11,7 @@ import UserInfo from '@/views/user/UserInfo.vue'
 import ChangePassword from '@/components/form/ChangePassword.vue'
 import ForgotPassword from '@/views/user/ForgotPassword.vue'
 import ResetPassword from '@/views/user/ResetPassword.vue'
+import UserAddress from '@/views/user/UserAddress.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -62,6 +63,13 @@ const router = createRouter({
           path: '/profile/change-password',
           name: 'change-password',
           component: ChangePassword,
+          meta: { noHeader: false, layout: 'default' },
+          props: (route) => ({ user: route.params.user }),
+        },
+        {
+          path: '/profile/address',
+          name: 'user-address',
+          component: UserAddress,
           meta: { noHeader: false, layout: 'default' },
           props: (route) => ({ user: route.params.user }),
         },
