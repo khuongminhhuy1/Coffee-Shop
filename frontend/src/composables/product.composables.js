@@ -12,5 +12,16 @@ export function useProduct() {
       return []
     }
   }
-  return { getProductData }
+  async function getSingleProduct(id) {
+    try {
+      const product = await productServices.getSingleProduct(id)
+      const res = product.data
+      console.log(res)
+      return res
+    } catch (error) {
+      console.log(error)
+      return {}
+    }
+  }
+  return { getProductData, getSingleProduct }
 }

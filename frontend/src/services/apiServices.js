@@ -20,8 +20,24 @@ export class ProductServices extends AxiosServices {
   async getProducts() {
     return await this.get('/product')
   }
+  async getSingleProduct(id) {
+    return await this.get(`/product/${id}`)
+  }
 }
 export const productServices = new ProductServices()
+
+export class CartServices extends AxiosServices {
+  async getCart(userId) {
+    return await this.get(`/cart/${userId}`)
+  }
+  async addToCart(data) {
+    return await this.post('/cart/add', data)
+  }
+  async deleteCart(id) {
+    return await this.delete(`/cart/${id}`)
+  }
+}
+export const cartServices = new CartServices()
 
 export class AdminServices extends AxiosServices {
   async getUserData() {

@@ -12,6 +12,8 @@ import ChangePassword from '@/components/form/ChangePassword.vue'
 import ForgotPassword from '@/views/user/ForgotPassword.vue'
 import ResetPassword from '@/views/user/ResetPassword.vue'
 import UserAddress from '@/views/user/UserAddress.vue'
+import SingleProductPage from '@/views/product/SingleProductPage.vue'
+import CartPage from '@/views/cart/CartPage.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -74,6 +76,18 @@ const router = createRouter({
           props: (route) => ({ user: route.params.user }),
         },
       ],
+    },
+    {
+      path: '/products/:id',
+      name: 'single-product',
+      component: SingleProductPage,
+      meta: { noHeader: false, layout: 'default' },
+    },
+    {
+      path: '/cart',
+      name: 'cart',
+      component: CartPage,
+      meta: { noHeader: false, layout: 'default' },
     },
     {
       path: '/admin',
