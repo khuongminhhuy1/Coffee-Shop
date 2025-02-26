@@ -109,7 +109,7 @@ const fetchCartItems = async () => {
     const response = await cart.getCartData(auth.user.id)
     if (response) {
       cartItems.value = response.cartItems.map((item) => ({
-        id: item.id,
+        id: item.Product.id,
         name: item.Product.name,
         price: item.Product.price,
         image: item.Product.images?.[0]?.url || '',
@@ -190,15 +190,20 @@ const removeItem = async (itemId) => {
   }
 }
 const goToCheckout = () => {
-  const selectedProducts = cartItems.value.filter((item) => selectedItems.value.includes(item.id))
+  if (!paymentMethod.value) {
+    alert('Please select a payment method to proceed.')
+    return
+  } else {
+    const selectedProducts = cartItems.value.filter((item) => selectedItems.value.includes(item.id))
 
-  router.push({
-    name: 'checkout',
-    query: {
-      products: JSON.stringify(selectedProducts),
-      paymentMethod: paymentMethod.value,
-    },
-  })
+    router.push({
+      name: 'checkout',
+      query: {
+        products: JSON.stringify(selectedProducts),
+        paymentMethod: paymentMethod.value,
+      },
+    })
+  }
 }
 
 // Lifecycle Hook

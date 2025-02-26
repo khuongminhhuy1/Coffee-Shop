@@ -137,12 +137,6 @@ const addToCart = async () => {
     return
   }
 
-  const user = JSON.parse(localStorage.getItem('user'))
-  if (!product.value || !product.value.id) {
-    console.error('Product ID is missing')
-    return
-  }
-
   try {
     await cart.addToCart({
       userId: authData.user.id,

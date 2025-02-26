@@ -20,6 +20,7 @@ enum Role {
 enum OrderStatus {
   PENDING
   DELIVERING
+  DELIVERED
   COMPLETED
   CANCELLED
 }
@@ -92,7 +93,7 @@ model Product {
   description String?
   images      Image[]
   cart        Cart[]
-  order       Orders[]
+  orderItems       OrderItems[]
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
@@ -123,19 +124,31 @@ model Cart {
 }
 
 model Orders {
-  id            Int         @id @default(autoincrement())
+  id            String       @id @default(uuid())
   userId        String
-  productId     String
-  orderNumber   String        @unique
-  quantity      Int
+  orderNumber   String       @unique
   totalAmount   Float
-  status        OrderStatus  @default(PENDING)
   paymentMethod String
+  status        OrderStatus  @default(PENDING)
   createdAt     DateTime     @default(now())
   updatedAt     DateTime     @updatedAt
-  User          User         @relation(fields: [userId], references: [id])  
-  Product   Product  @relation(fields: [productId], references: [id])
-  
+  canceledAt    DateTime?    // Track canceled orders
+
+  user          User         @relation(fields: [userId], references: [id])
+  orderItems    OrderItems[] // New relation to OrderItems table
+
   @@index([userId])
   @@map("orders")
+}
+
+model OrderItems {
+  id        String   @id @default(uuid())
+  orderId   String
+  productId String
+  quantity  Int
+
+  order     Orders   @relation(fields: [orderId], references: [id])
+  product   Product  @relation(fields: [productId], references: [id])
+
+  @@map("order_items")
 }

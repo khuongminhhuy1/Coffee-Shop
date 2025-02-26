@@ -13,15 +13,16 @@ export function useAuth() {
   async function register(name, email, password) {
     loading.value = true
     errorMessage.value = ''
+
     try {
       const response = await authServices.register(name, email, password)
-      const {
-        data: { user },
-      } = response.data
-      console.log(user)
+      // Show success message
+      alert('Registration successful! Please check your email to verify your account.')
+      // Redirect user to login page
+      router.push('/login')
     } catch (error) {
       console.error('Register Error:', error)
-      errorMessage.value = error.response?.data?.message || 'Register failed!'
+      errorMessage.value = error.response?.data?.message || 'Registration failed!'
     } finally {
       loading.value = false
     }
@@ -57,5 +58,5 @@ export function useAuth() {
     }
   }
 
-  return { register, login, logout, loading, errorMessage}
+  return { register, login, logout, loading, errorMessage }
 }

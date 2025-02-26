@@ -14,6 +14,9 @@ import ResetPassword from '@/views/user/ResetPassword.vue'
 import UserAddress from '@/views/user/UserAddress.vue'
 import SingleProductPage from '@/views/product/SingleProductPage.vue'
 import CartPage from '@/views/cart/CartPage.vue'
+import Checkout from '@/views/checkout/Checkout.vue'
+import OrderedPage from '@/views/order/OrderedPage.vue'
+import OrdersPage from '@/views/order/OrdersPage.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -75,6 +78,13 @@ const router = createRouter({
           meta: { noHeader: false, layout: 'default' },
           props: (route) => ({ user: route.params.user }),
         },
+        {
+          path: '/profile/orders',
+          name: 'UserOrder',
+          component: OrdersPage,
+          meta: { noHeader: false, layout: 'default' },
+          props: (route) => ({ user: route.params.user }),
+        },
       ],
     },
     {
@@ -87,6 +97,18 @@ const router = createRouter({
       path: '/cart',
       name: 'cart',
       component: CartPage,
+      meta: { noHeader: false, layout: 'default' },
+    },
+    {
+      path: '/checkout',
+      name: 'checkout',
+      component: Checkout,
+      meta: { noHeader: false, layout: 'default' },
+    },
+    {
+      path: '/order-confirmation',
+      name: 'order-confirmation',
+      component: OrderedPage,
       meta: { noHeader: false, layout: 'default' },
     },
     {

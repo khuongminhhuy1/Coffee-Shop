@@ -10,6 +10,7 @@ import userRouter from "./routes/userRoute.js";
 import categoryRouter from "./routes/categoryRoute.js";
 import productRouter from "./routes/productRoute.js";
 import cartRouter from "./routes/cartRoute.js";
+import orderRouter from "./routes/orderRoute.js"
 
 const app = express();
 
@@ -25,6 +26,7 @@ app.use("/", userRouter);
 app.use("/category", categoryRouter);
 app.use("/product", productRouter);
 app.use("/cart", cartRouter);
+app.use("/orders", orderRouter);
 
 const PORT = process.env.PORT || 3000;
 

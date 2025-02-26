@@ -73,3 +73,13 @@ export class UserServices extends AxiosServices {
   }
 }
 export const userServices = new UserServices()
+
+export class OrderServices extends AxiosServices {
+  async Checkout(data) {
+    return await this.post('/orders/checkout', data)
+  }
+  async getOrders(userId) {
+    return await this.get(`/orders/${userId}`)
+  }
+}
+export const orderServices = new OrderServices()
