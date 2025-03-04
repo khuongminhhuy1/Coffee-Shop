@@ -52,13 +52,14 @@ npm install
   ```
 - Start the backend
   ```sh
-  npm run dev
+  npm run start
   ```
 
 ### 3. Frontend Setup
 ```sh
 cd ../frontend
 npm install
+npm run build
 ```
 - Run the frontend
   ```sh
