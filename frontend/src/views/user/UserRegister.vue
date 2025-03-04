@@ -19,6 +19,7 @@
               </p>
             </div>
 
+            <!-- Name Field -->
             <div>
               <label class="text-white text-xs block mb-2 font-extrabold">Name</label>
               <input
@@ -30,6 +31,7 @@
               />
             </div>
 
+            <!-- Email Field -->
             <div class="mt-4">
               <label class="text-white text-xs block mb-2 font-extrabold">Email</label>
               <input
@@ -41,6 +43,7 @@
               />
             </div>
 
+            <!-- Password Field -->
             <div class="mt-4">
               <label class="text-white text-xs block mb-2 font-extrabold">Password</label>
               <input
@@ -50,8 +53,15 @@
                 class="w-full bg-white rounded-md text-emerald-800 text-sm border-gray-300 focus:border-blue-600 px-2 py-3 outline-none"
                 placeholder="Enter Password"
               />
+              <p
+                v-if="data.password.length > 0 && data.password.length < 6"
+                class="text-red-500 text-sm"
+              >
+                Password must be at least 6 characters
+              </p>
             </div>
 
+            <!-- Confirm Password Field -->
             <div class="mt-4">
               <label class="text-white text-xs block mb-2 font-extrabold">Confirm Password</label>
               <input
@@ -62,33 +72,39 @@
                 placeholder="Confirm Password"
               />
               <p
-                v-if="data.password !== data.confirmPassword && data.attemptedSubmit"
+                v-if="data.password !== data.confirmPassword && data.confirmPassword.length > 0"
                 class="text-red-500 text-sm"
               >
                 Passwords do not match
               </p>
             </div>
 
+            <!-- Terms & Conditions -->
             <div class="mt-4 flex flex-row items-center">
               <input type="checkbox" v-model="data.isTermsAccepted" class="checkbox mr-4" />
               <p class="text-white">I accept the <a href="#">Terms of Service</a></p>
             </div>
 
+            <!-- Error Message -->
             <p v-if="errorMessage" class="text-red-500 text-sm mt-2">{{ errorMessage }}</p>
 
+            <!-- Register Button -->
             <div class="mt-6">
               <button
                 type="submit"
-                class="w-full shadow-xl py-2.5 px-4 text-sm tracking-wide rounded-md font-bold bg-gradient-to-r from-lime-200 via-lime-400 to-lime-500 hover:bg-gradient-to-br"
+                class="w-full shadow-xl py-2.5 px-4 text-sm tracking-wide rounded-md font-bold bg-gradient-to-r from-lime-200 via-lime-400 to-lime-500 hover:bg-gradient-to-br disabled:opacity-50 disabled:cursor-not-allowed"
                 :disabled="
                   !data.isTermsAccepted ||
                   !data.name ||
                   !data.email ||
                   !data.password ||
-                  data.password !== data.confirmPassword
+                  data.password.length < 6 ||
+                  data.password !== data.confirmPassword ||
+                  loading
                 "
               >
-                Register
+                <span v-if="loading">Registering...</span>
+                <span v-else>Register</span>
               </button>
             </div>
           </form>
@@ -102,11 +118,14 @@
 
 <script setup>
 import { useAuth } from '@/composables/useAuth'
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
+import { useRouter } from 'vue-router'
 import backgroundImg from '@/assets/bg/noHeader-bg.jpg'
 
 const auth = useAuth()
+const router = useRouter()
 const errorMessage = ref('')
+const loading = ref(false)
 
 const data = ref({
   name: '',
@@ -114,14 +133,29 @@ const data = ref({
   password: '',
   confirmPassword: '',
   isTermsAccepted: false,
-  attemptedSubmit: false,
 })
 
-const register = async () => {
-  data.value.attemptedSubmit = true
+// ✅ Reset error message when user starts typing again
+watch(
+  [
+    () => data.value.name,
+    () => data.value.email,
+    () => data.value.password,
+    () => data.value.confirmPassword,
+  ],
+  () => {
+    errorMessage.value = ''
+  },
+)
 
+const register = async () => {
   if (!data.value.name || !data.value.email || !data.value.password) {
     errorMessage.value = 'All fields are required'
+    return
+  }
+
+  if (data.value.password.length < 6) {
+    errorMessage.value = 'Password must be at least 6 characters'
     return
   }
 
@@ -131,11 +165,15 @@ const register = async () => {
   }
 
   try {
+    loading.value = true
     const response = await auth.register(data.value.name, data.value.email, data.value.password)
     console.log('Registration successful:', response.data)
     errorMessage.value = ''
+    router.push('/login') // ✅ Redirect to login after successful registration
   } catch (error) {
     errorMessage.value = error.response?.data?.message || 'Registration failed'
+  } finally {
+    loading.value = false
   }
 }
 </script>

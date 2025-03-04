@@ -17,11 +17,11 @@
           Total: <span class="font-semibold">${{ order.totalAmount.toFixed(2) }}</span>
         </p>
         <div class="mt-2">
-          <h3 class="text-lg font-bold">Products:</h3>
+          <h3 class="text-lg font-bold text-black">Products:</h3>
           <ul>
             <li v-for="item in order.orderItems" :key="item.id" class="flex items-center mt-2">
               <img
-                :src="item.product.images[0]"
+                :src="item.product.images.length ? item.product.images[0].url : ''"
                 alt="Product Image"
                 class="w-16 h-16 rounded-md object-cover mr-4"
               />

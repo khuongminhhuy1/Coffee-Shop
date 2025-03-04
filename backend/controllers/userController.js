@@ -303,7 +303,49 @@ export async function UpdateUser(req, res, next) {
 
 export async function DeleteUser(req, res, next) {
   const { id } = req.params;
-  await prisma.user.delete({ where: { id: id } });
+
+  // ✅ Step 1: Find all orders related to this user
+  const userOrders = await prisma.orders.findMany({
+    where: { userId: id },
+    select: { id: true }, // Only select order IDs
+  });
+
+  const orderIds = userOrders.map((order) => order.id); // Extract order IDs
+
+  // ✅ Step 2: Use Prisma transaction for safe deletion
+  await prisma.$transaction(async (prisma) => {
+    // Delete refresh tokens
+    await prisma.token.deleteMany({
+      where: { userId: id },
+    });
+
+    if (orderIds.length > 0) {
+      // Delete order items first (to prevent foreign key constraints)
+      await prisma.orderItems.deleteMany({
+        where: { orderId: { in: orderIds } },
+      });
+
+      // Delete the orders
+      await prisma.orders.deleteMany({
+        where: { userId: id },
+      });
+    }
+
+    // Delete cart items
+    await prisma.cart.deleteMany({
+      where: { userId: id },
+    });
+
+    await prisma.userInformation.deleteMany({
+      where: { userId: id },
+    });
+
+    // Finally, delete the user
+    await prisma.user.delete({
+      where: { id },
+    });
+  });
+
   return res.status(200).json({
     status: "success",
     message: "User deleted successfully",
