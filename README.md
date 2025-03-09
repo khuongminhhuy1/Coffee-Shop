@@ -39,12 +39,22 @@ cd backend
 npm install
 ```
 - Create a `.env` file in the backend directory and add:
+- Note: There's already a .env.example
   ```env
   DATABASE_URL="your-database-url"
-  JWT_SECRET="your-secret-key"
-  CLOUDINARY_CLOUD_NAME="your-cloud-name"
-  CLOUDINARY_API_KEY="your-api-key"
-  CLOUDINARY_API_SECRET="your-api-secret"
+  DATABASE_URL="mysql://root:051998@localhost:3306/database"
+  PORT="8080"
+  SERVER_URL="http://localhost:8080"
+  APP_URL="http://localhost:5173"
+  NODE_ENV="production"
+  CLOUD_NAME=
+  CLOUD_API_KEY=
+  CLOUD_API_SECRET=
+  EMAIL_USER=
+  EMAIL_PASS=
+  JWT_SECRET=
+  JWT_EXPIRES_IN=
+  REFRESH_SECRET=
   ```
 - Run database migrations
   ```sh
