@@ -17,6 +17,7 @@ import CartPage from '@/views/cart/CartPage.vue'
 import Checkout from '@/views/checkout/Checkout.vue'
 import OrderedPage from '@/views/order/OrderedPage.vue'
 import OrdersPage from '@/views/order/OrdersPage.vue'
+import ShowCategories from '@/views/admin/category/ShowCategories.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -127,6 +128,12 @@ const router = createRouter({
           path: '/admin/users',
           name: 'admin-users',
           component: ShowUsers,
+          meta: { layout: 'admin', requiresAuth: true, requiresRole: 'ADMIN' },
+        },
+        {
+          path: '/admin/categories',
+          name: 'admin-categories',
+          component: ShowCategories,
           meta: { layout: 'admin', requiresAuth: true, requiresRole: 'ADMIN' },
         },
       ],

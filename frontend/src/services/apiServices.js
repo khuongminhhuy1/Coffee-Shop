@@ -83,3 +83,19 @@ export class OrderServices extends AxiosServices {
   }
 }
 export const orderServices = new OrderServices()
+
+export class CategoryServices extends AxiosServices {
+  async getCategories() {
+    return await this.get('/category')
+  }
+  async updateCategory(id, data) {
+    return await this.put(`/category/${id}`, data)
+  }
+  async deleteCategory(id) {
+    return await this.delete(`/category/${id}`)
+  }
+  async addCategory(name) {
+    return await this.post('/category/create', name)
+  }
+}
+export const categoryServices = new CategoryServices()

@@ -2,11 +2,11 @@ import AppError from "../middlewares/errors/appError.js";
 import { prisma } from "../prisma/client.js";
 
 export async function createCategory(req, res) {
-  const { name, total } = req.body;
+  const { name } = req.body;
   const newCategory = await prisma.category.create({
     data: {
       name,
-      total,
+      total: 0,
     },
   });
   return res.status(200).send(newCategory);
