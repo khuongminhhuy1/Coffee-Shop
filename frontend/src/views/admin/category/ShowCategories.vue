@@ -25,9 +25,7 @@
           <td>{{ category.name }}</td>
           <td>{{ category.total }}</td>
           <td class="flex flex-row">
-            <!-- Pass category ID to the UpdateCategory component -->
-            <!-- <UpdateCategory :id="category.id" @update="updateCategory" />
-            <DeleteCategory :id="category.id" @delete="removeCategory" /> -->
+            <DeleteCategory :id="category.id" @delete="removeCategory" />
           </td>
         </tr>
       </tbody>
@@ -36,8 +34,7 @@
 </template>
 
 <script setup>
-// import UpdateCategory from './modal/UpdateCategory.vue'
-// import DeleteCategory from './modal/DeleteCategory.vue'
+import DeleteCategory from './modal/DeleteCategory.vue'
 import { useCategory } from '@/composables/category.composables'
 import { onMounted, ref } from 'vue'
 
@@ -45,15 +42,9 @@ const categories = ref([])
 const categoryStore = useCategory()
 const newCategory = ref({ name: '' })
 
-const updateCategory = (updatedCategory) => {
-  const index = categories.value.findIndex((cat) => cat.id === updatedCategory.id)
-  if (index !== -1) {
-    categories.value[index] = { ...categories.value[index], ...updatedCategory } // Update in place
-  }
-}
-
 // Remove category after deletion
 const removeCategory = (categoryId) => {
+  // Ensure ID is compared properly (without forcing number conversion)
   categories.value = categories.value.filter((category) => category.id !== categoryId)
 }
 const createCategory = async () => {

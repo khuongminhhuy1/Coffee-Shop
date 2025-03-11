@@ -53,7 +53,8 @@ const updateUser = (updatedUser) => {
 
 // Remove user from the list after deletion
 const removeUser = (userId) => {
-  users.value = users.value.filter((user) => user.id !== userId)
+  console.log(`Deleting user with ID: ${userId}`) // Debugging log
+  users.value = users.value.filter((user) => String(user.id) !== String(userId))
 }
 
 onMounted(async () => {

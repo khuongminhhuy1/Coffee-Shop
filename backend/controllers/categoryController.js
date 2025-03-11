@@ -27,8 +27,9 @@ export async function updateCategory(req, res) {
 export async function deleteCategory(req, res) {
   const { id } = req.params;
   await prisma.category.delete({
-    where: { id: id },
+    where: { id: Number(id) },
   });
+
   return res.status(201).json("category deleted");
 }
 

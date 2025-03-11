@@ -57,6 +57,24 @@ export function useAuth() {
       loading.value = false
     }
   }
-
-  return { register, login, logout, loading, errorMessage }
+  async function checkAuthState() {
+    loading.value = true
+    try {
+      // Try to verify current session using cookies
+      const response = await authServices.verifySession()
+      if (response.data?.user) {
+        // If server confirms we're authenticated, set the user
+        authStore.setUser(response.data.user)
+        return true
+      }
+      return false
+    } catch (error) {
+      console.log('No active session or session expired')
+      authStore.setUser(null)
+      return false
+    } finally {
+      loading.value = false
+    }
+  }
+  return { register, login, logout, loading, errorMessage, checkAuthState }
 }

@@ -13,6 +13,9 @@ export class AuthServices extends AxiosServices {
   async register(name, email, password) {
     return await this.post('/register', { name, email, password })
   }
+  async verifySession(){
+    return await this.get('/verify-session')
+  }
 }
 export const authServices = new AuthServices()
 

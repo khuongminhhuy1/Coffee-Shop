@@ -25,14 +25,17 @@
 import { useRoute } from 'vue-router'
 import Layout from './components/layouts/UserLayout.vue'
 import AdminLayout from './components/layouts/AdminLayout.vue'
-import { computed, onMounted } from 'vue'
+import { computed, onBeforeMount } from 'vue'
 import { RouterView } from 'vue-router'
+import { useAuth } from './composables/useAuth'
 
-onMounted(() => {})
-
+const auth = useAuth()
 const route = useRoute()
 const layout = computed(() => route.meta.layout || 'default')
 const noHeader = computed(() => route.meta.noHeader)
+onBeforeMount(async () => {
+  await auth.checkAuthState()
+})
 </script>
 
 <style scoped>

@@ -16,7 +16,10 @@ import catchAsync from "../utils/catchAsync.js";
 import authMiddleware from "../middlewares/verification/auth.js";
 import { adminMiddleware } from "../middlewares/verification/protected.js";
 import { constructUrl } from "../urlHelper.js";
-import { refreshTokenHandler } from "../controllers/tokenController.js";
+import {
+  refreshTokenHandler,
+  verifySession,
+} from "../controllers/tokenController.js";
 import { checkVerified } from "../middlewares/verification/verified.js";
 import {
   deleteUserInformation,
@@ -62,7 +65,8 @@ router.delete(
 );
 
 //Refresh token
-router.get("/refresh-token", refreshTokenHandler);
+router.get("/verify-session", verifySession);
+router.get("/refresh-token", catchAsync(refreshTokenHandler));
 
 //User Data
 router.get("/profile/:userId", authMiddleware, catchAsync(getUserInformation));
